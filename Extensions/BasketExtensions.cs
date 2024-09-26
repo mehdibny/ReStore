@@ -1,5 +1,6 @@
 ﻿using e_commece_API_React.DTOs;
 using e_commece_API_React.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace e_commece_API_React.Extensions
 {
@@ -23,6 +24,12 @@ namespace e_commece_API_React.Extensions
                 }).ToList()
 
             };
+        }
+
+        public static IQueryable<Basket> RetrieveBasketWithItems(this IQueryable<Basket> query, string buyerId)
+        {
+            return query.Include(i => i.Items)
+                .ThenInclude(p => p.Product).Where(b => b.BuyerId == buyerId);
         }
     }
 }
